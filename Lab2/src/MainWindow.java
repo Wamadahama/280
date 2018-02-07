@@ -1,3 +1,8 @@
+/*
+ * Elijah Ellis
+ * 2/7/18
+ * lab 2 gui
+ */
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -98,9 +103,11 @@ public class MainWindow {
 					// append text to the text pane 
 					StyledDocument doc = serverTextPane.getStyledDocument();
 					doc.insertString(doc.getLength(), stream.readUTF() + "\n", null);
+					stream.close();
 				} catch (Exception p) {
 					p.printStackTrace();
 				}
+				
 			}
 		});
 		frame.getContentPane().add(submitBtn);		

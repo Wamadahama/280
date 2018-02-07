@@ -1,3 +1,8 @@
+/*
+ * Elijah Ellis
+ * 2/7/18
+ * Client 
+ */
 import java.net.*;
 import java.io.*;
 
@@ -8,7 +13,7 @@ public class Client {
 	public DataInputStream Request(String option, double data) { 
 
 		String serverName = "localhost";
-		int port = 7778;
+		int port = 7788;
 		
 		try {
 			// Create socket connection 
@@ -22,9 +27,6 @@ public class Client {
 			// Get the input stream 
 			InputStream fromServer = client.getInputStream();
 			DataInputStream recievedData = new DataInputStream(fromServer);
-			
-			// Close the connection 
-			client.close(); 
 			
 			// Return the InputStream 
 			return recievedData;
