@@ -6,6 +6,7 @@ public class Server extends Thread {
 	private ServerSocket socket; 
 	
 	public Server(int port) throws IOException {  
+		// Set up socket 
 		socket = new ServerSocket(port);
 		socket.setSoTimeout(1000000);
 	}
@@ -13,29 +14,30 @@ public class Server extends Thread {
 	public void run() {
 		while(true) {
 			try { 
+				
 				System.out.println("Waiting for client connection on port " + socket.getLocalPort());
+				// Get server connection 
 				Socket server = socket.accept(); 
 
 				System.out.println("Connected to " + server.getRemoteSocketAddress());
 				DataInputStream in = new DataInputStream(server.getInputStream());
 
+				// Read what the client sent us 
 				String[] input = (in.readUTF()).split(" ");  
 				
 				String option = input[0];
 				double data   = Double.parseDouble(input[1]);
 				
-				System.out.println(option);
-				System.out.println(option.trim() == "circle");
-				System.out.println(data);
-				
+				// Determine what function to use and then calculate area 
 				double returnData = option.equals("circle") ? calculateCircleArea(data) : calculateSquareArea(data);
 
+				// Prepare output 
 				DataOutputStream out = new DataOutputStream(server.getOutputStream());
 				
-				System.out.println(returnData);
-				
+				// Send output 
 				out.writeUTF(option + "area: " + returnData);
 				
+				// Close connection 
 				server.close();
 
 			} catch (SocketTimeoutException e) {

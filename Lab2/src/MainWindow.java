@@ -4,8 +4,11 @@ import javax.swing.JFrame;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
+import javax.swing.text.StyledDocument;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -43,6 +46,8 @@ public class MainWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+
+
 		frame = new JFrame();
 		frame.setBounds(100, 100, 369, 408);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,8 +58,13 @@ public class MainWindow {
 		frame.getContentPane().add(circleRadioBtn);
 		
 		JRadioButton squareRadioBtn = new JRadioButton("Square");
-		squareRadioBtn.setBounds(27, 59, 149, 23);
+		squareRadioBtn.setBounds(27, 53, 149, 23);
 		frame.getContentPane().add(squareRadioBtn);
+		
+		// add the radio buttons to a button group 
+		ButtonGroup group = new ButtonGroup(); 
+		group.add(circleRadioBtn);
+		group.add(squareRadioBtn);
 		
 		inputField = new JTextField();
 		inputField.setBounds(213, 55, 114, 19);
@@ -69,7 +79,9 @@ public class MainWindow {
 		serverTextPane.setBounds(27, 165, 309, 194);
 		frame.getContentPane().add(serverTextPane);
 
+
 		JButton submitBtn = new JButton("Submit Request");
+		submitBtn.setBounds(113, 128, 149, 25);
 		submitBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -83,13 +95,14 @@ public class MainWindow {
 				DataInputStream stream = client.Request(option, input);
 				
 				try {
-					serverTextPane.setText(stream.readUTF());
-				} catch (IOException p) {
+					// append text to the text pane 
+					StyledDocument doc = serverTextPane.getStyledDocument();
+					doc.insertString(doc.getLength(), stream.readUTF() + "\n", null);
+				} catch (Exception p) {
 					p.printStackTrace();
 				}
 			}
 		});
-		submitBtn.setBounds(113, 128, 149, 25);
 		frame.getContentPane().add(submitBtn);		
 	}
 }
